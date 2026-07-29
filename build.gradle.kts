@@ -1,9 +1,10 @@
 plugins {
     `java-library`
+    `maven-publish`
 }
 
-group = "kerosene"
-version = "PRE-ALPHA"
+group = "io.kerosene.contracts"
+version = "0.1.0-SNAPSHOT"
 description = "Kerosene shared contracts for KFE/Core boundaries"
 
 java {
@@ -15,4 +16,12 @@ java {
 
 repositories {
     mavenCentral()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("java") {
+            from(components["java"])
+        }
+    }
 }

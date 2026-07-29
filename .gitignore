@@ -1,0 +1,7 @@
+.gradle/
+build/
+*.class
+*.log
+.idea/
+*.iml
+.smart_build_state.json
