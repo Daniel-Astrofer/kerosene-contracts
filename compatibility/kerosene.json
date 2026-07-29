@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "component": "contracts",
+  "contracts": {
+    "provides": [
+      "0.1.0"
+    ],
+    "accepts": [
+      "0.1.0"
+    ]
+  }
+}
