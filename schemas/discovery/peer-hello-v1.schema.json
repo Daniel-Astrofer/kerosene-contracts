@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.kerosene.invalid/discovery/peer-hello-v1.schema.json",
+  "title": "PeerHelloV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "network_id", "plane", "member_id", "root_public_key", "challenge", "issued_at_epoch_ms", "endpoint", "signature"],
+  "properties": {
+    "contract_version": {"const": "0.2.0"},
+    "network_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "plane": {"enum": ["bank", "vault"]},
+    "member_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "root_public_key": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "challenge": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "issued_at_epoch_ms": {"type": "integer", "minimum": 0},
+    "endpoint": {"type": "string", "pattern": "^https://[a-z2-7]{56}\\.onion(?::[0-9]{1,5})?$"},
+    "signature": {"type": "string", "pattern": "^[0-9a-f]{128}$"}
+  }
+}
