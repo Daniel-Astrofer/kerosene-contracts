@@ -21,6 +21,13 @@ plane, member identity, challenge, issuance time and onion endpoint. Challenges
 are single-use and bounded by time. A hello is authenticated before it can be
 checked against membership; authentication alone does not grant membership.
 
+## Admission request
+
+`AdmissionRequestV1` is a candidate-signed, challenged request naming the
+proposed member and an existing sponsor. Parsing or authenticating the request
+does not admit the candidate. Admission only becomes authoritative through the
+signed joint-consensus manifest transition.
+
 ## Membership manifest
 
 `MembershipManifestV1` is hash-chained by `previous_manifest_hash`. Signatures

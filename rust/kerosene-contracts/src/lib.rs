@@ -8,6 +8,7 @@ use sha2::{Digest, Sha256};
 
 pub const DISCOVERY_CONTRACT_VERSION: &str = "0.2.0";
 pub const PEER_HELLO_DOMAIN: &[u8] = b"KEROSENE_PEER_HELLO_V1";
+pub const ADMISSION_REQUEST_DOMAIN: &[u8] = b"KEROSENE_ADMISSION_REQUEST_V1";
 pub const MEMBERSHIP_MANIFEST_DOMAIN: &[u8] = b"KEROSENE_MEMBERSHIP_MANIFEST_V1";
 pub const GENESIS_TRUST_BUNDLE_DOMAIN: &[u8] = b"KEROSENE_GENESIS_TRUST_BUNDLE_V1";
 
@@ -64,6 +65,20 @@ pub struct PeerHelloV1 {
     pub issued_at_epoch_ms: u64,
     pub endpoint: String,
     /// Ed25519 signature encoded as 128 lowercase hexadecimal characters.
+    pub signature: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct AdmissionRequestV1 {
+    pub contract_version: String,
+    pub network_id: String,
+    pub plane: DiscoveryPlane,
+    pub candidate: ManifestMember,
+    pub sponsor_id: String,
+    pub challenge: String,
+    pub issued_at_epoch_ms: u64,
+    /// Candidate Ed25519 signature encoded as 128 lowercase hexadecimal characters.
     pub signature: String,
 }
 
@@ -132,6 +147,22 @@ impl CanonicalSignable for PeerHelloV1 {
         field(&mut out, self.challenge.as_bytes());
         integer(&mut out, self.issued_at_epoch_ms);
         field(&mut out, self.endpoint.as_bytes());
+        out
+    }
+}
+
+impl CanonicalSignable for AdmissionRequestV1 {
+    fn signing_bytes(&self) -> Vec<u8> {
+        let mut out = domain(ADMISSION_REQUEST_DOMAIN);
+        field(&mut out, self.contract_version.as_bytes());
+        field(&mut out, self.network_id.as_bytes());
+        field(&mut out, self.plane.as_str().as_bytes());
+        field(&mut out, self.candidate.member_id.as_bytes());
+        field(&mut out, self.candidate.root_public_key.as_bytes());
+        field(&mut out, self.candidate.endpoint.as_bytes());
+        field(&mut out, self.sponsor_id.as_bytes());
+        field(&mut out, self.challenge.as_bytes());
+        integer(&mut out, self.issued_at_epoch_ms);
         out
     }
 }

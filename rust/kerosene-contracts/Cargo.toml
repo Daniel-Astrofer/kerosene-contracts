@@ -6,6 +6,10 @@ rust-version.workspace = true
 license.workspace = true
 description = "Canonical Kerosene cross-repository wire contracts"
 
+[features]
+default = []
+production = []
+
 [dependencies]
 hex = "0.4"
 serde = { version = "1", features = ["derive"] }
