@@ -6,6 +6,12 @@ The initial extraction contains the existing Java DTO contracts and legacy LND
 protobuf definitions. New bank, Vault, identity and rail protocols must be
 defined here with compatibility tests and test vectors.
 
+Discovery and membership v1 are defined by the JSON schemas under
+`schemas/discovery/` and the canonical Rust types in
+`rust/kerosene-contracts`. Signatures use the domain-separated binary
+representation returned by `CanonicalSignable`; arbitrary JSON bytes are never
+signed.
+
 ## Compatibility policy
 
 Breaking changes use a two-phase rollout:
