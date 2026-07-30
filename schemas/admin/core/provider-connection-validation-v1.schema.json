@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.kerosene.invalid/admin/core/provider-connection-validation-v1.schema.json",
+  "title": "ProviderConnectionValidationV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["provider_id", "provider_type", "reachable", "authenticated", "functional", "latency_ms", "warnings", "errors"],
+  "properties": {
+    "provider_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "provider_type": {"type": "string", "minLength": 1, "maxLength": 64},
+    "reachable": {"type": "boolean"},
+    "authenticated": {"type": "boolean"},
+    "functional": {"type": "boolean"},
+    "latency_ms": {"type": "string", "pattern": "^-?\\d+(\\.\\d+)?$"},
+    "warnings": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 512}
+    },
+    "errors": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 1024}
+    }
+  }
+}
