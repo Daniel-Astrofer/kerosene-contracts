@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.kerosene.invalid/admin/core/onramp-order-v1.schema.json",
+  "title": "OnrampOrderV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "user_id", "source_currency", "target_asset", "source_amount", "target_amount", "provider_id", "status", "created_at", "updated_at"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "user_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "source_currency": {"type": "string", "minLength": 1, "maxLength": 16},
+    "target_asset": {"type": "string", "minLength": 1, "maxLength": 16},
+    "source_amount": {"type": "string", "pattern": "^-?\\d+(\\.\\d+)?$"},
+    "target_amount": {"type": "string", "pattern": "^-?\\d+(\\.\\d+)?$"},
+    "provider_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "status": {"type": "string", "minLength": 1, "maxLength": 32},
+    "failure_reason": {"type": "string", "minLength": 1, "maxLength": 1024},
+    "created_at": {"type": "integer", "minimum": 0},
+    "updated_at": {"type": "integer", "minimum": 0}
+  }
+}

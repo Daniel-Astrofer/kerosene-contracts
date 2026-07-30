@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.kerosene.invalid/admin/core/p2p-order-v1.schema.json",
+  "title": "P2pOrderV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "maker_id", "taker_id", "side", "asset", "fiat_currency", "amount", "price", "status", "created_at", "updated_at"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "maker_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "taker_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "side": {"enum": ["buy", "sell"]},
+    "asset": {"type": "string", "minLength": 1, "maxLength": 16},
+    "fiat_currency": {"type": "string", "minLength": 1, "maxLength": 16},
+    "amount": {"type": "string", "pattern": "^-?\\d+(\\.\\d+)?$"},
+    "price": {"type": "string", "pattern": "^-?\\d+(\\.\\d+)?$"},
+    "status": {"type": "string", "minLength": 1, "maxLength": 32},
+    "created_at": {"type": "integer", "minimum": 0},
+    "updated_at": {"type": "integer", "minimum": 0}
+  }
+}
