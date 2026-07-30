@@ -11,6 +11,52 @@ pub const PEER_HELLO_DOMAIN: &[u8] = b"KEROSENE_PEER_HELLO_V1";
 pub const ADMISSION_REQUEST_DOMAIN: &[u8] = b"KEROSENE_ADMISSION_REQUEST_V1";
 pub const MEMBERSHIP_MANIFEST_DOMAIN: &[u8] = b"KEROSENE_MEMBERSHIP_MANIFEST_V1";
 pub const GENESIS_TRUST_BUNDLE_DOMAIN: &[u8] = b"KEROSENE_GENESIS_TRUST_BUNDLE_V1";
+pub const ADMIN_CONTRACT_VERSION: &str = "0.1.0";
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct AdminErrorEnvelopeV1 {
+    pub contract_version: String,
+    pub code: String,
+    pub message: String,
+    pub request_id: String,
+    pub details: serde_json::Value,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct AuditReferenceV1 {
+    pub event_id: String,
+    pub request_id: String,
+    pub occurred_at: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct NodeAdminStatusV1 {
+    pub contract_version: String,
+    pub request_id: String,
+    pub network_id: String,
+    pub plane: DiscoveryPlane,
+    pub local_ready: bool,
+    pub member_ready: bool,
+    pub quorum_ready: bool,
+    pub financial_ready: bool,
+    pub live_members: u64,
+    pub threshold: u16,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct VaultAdminStatusV1 {
+    pub contract_version: String,
+    pub request_id: String,
+    pub local_ready: bool,
+    pub financial_ready: bool,
+    pub node_id: String,
+    pub ceremony_mode: String,
+    pub bitcoin_network: String,
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -291,5 +337,23 @@ mod tests {
             right.member_id = "c".into();
             right.signing_bytes()
         });
+    }
+
+    #[test]
+    fn admin_contracts_reject_unknown_fields() {
+        let payload = r#"{
+            "contract_version":"0.1.0",
+            "request_id":"req-1",
+            "network_id":"kerosene-test",
+            "plane":"bank",
+            "local_ready":true,
+            "member_ready":true,
+            "quorum_ready":false,
+            "financial_ready":false,
+            "live_members":1,
+            "threshold":2,
+            "secret":"must-not-pass"
+        }"#;
+        assert!(serde_json::from_str::<NodeAdminStatusV1>(payload).is_err());
     }
 }

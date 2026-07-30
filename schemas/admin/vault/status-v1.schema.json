@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.kerosene.invalid/admin/vault/status-v1.schema.json",
+  "title": "VaultAdminStatusV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "request_id", "local_ready", "financial_ready", "node_id", "ceremony_mode", "bitcoin_network"],
+  "properties": {
+    "contract_version": {"const": "0.1.0"},
+    "request_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "local_ready": {"type": "boolean"},
+    "financial_ready": {"type": "boolean"},
+    "node_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "ceremony_mode": {"enum": ["lab", "staging", "production"]},
+    "bitcoin_network": {"type": "string", "minLength": 1, "maxLength": 32}
+  }
+}

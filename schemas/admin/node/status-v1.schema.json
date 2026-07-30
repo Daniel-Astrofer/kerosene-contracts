@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.kerosene.invalid/admin/node/status-v1.schema.json",
+  "title": "NodeAdminStatusV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "request_id", "network_id", "plane", "local_ready", "member_ready", "quorum_ready", "financial_ready", "live_members", "threshold"],
+  "properties": {
+    "contract_version": {"const": "0.1.0"},
+    "request_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "network_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "plane": {"enum": ["bank", "vault"]},
+    "local_ready": {"type": "boolean"},
+    "member_ready": {"type": "boolean"},
+    "quorum_ready": {"type": "boolean"},
+    "financial_ready": {"type": "boolean"},
+    "live_members": {"type": "integer", "minimum": 0},
+    "threshold": {"type": "integer", "minimum": 1, "maximum": 65535}
+  }
+}
