@@ -3,8 +3,9 @@
 //! Signatures are always calculated over [`CanonicalSignable::signing_bytes`],
 //! never over an arbitrary JSON serialization.
 
-use serde::{Deserialize, Serialize};
+use serde::{de, Deserialize, Serialize};
 use sha2::{Digest, Sha256};
+use std::fmt;
 
 pub const DISCOVERY_CONTRACT_VERSION: &str = "0.2.0";
 pub const PEER_HELLO_DOMAIN: &[u8] = b"KEROSENE_PEER_HELLO_V1";
@@ -116,6 +117,9 @@ pub struct MembershipManifestV1 {
     pub threshold: u16,
     pub members: Vec<ManifestMember>,
     /// Required only during joint consensus and names the intended stable epoch.
+    /// A value of `Some(0)` is invalid (schema minimum is 1) and will fail
+    /// deserialization with a clear error message.
+    #[serde(default, deserialize_with = "deserialize_next_epoch")]
     pub next_epoch: Option<u64>,
     pub signatures: Vec<ManifestSignature>,
 }
@@ -235,6 +239,61 @@ fn field(out: &mut Vec<u8>, value: &[u8]) {
     out.extend_from_slice(value);
 }
 
+/// Custom deserializer for `Option<u64>` that rejects `Some(0)`.
+///
+/// The JSON schema requires `next_epoch >= 1` when present. This enforces
+/// that constraint at deserialization time to prevent invalid state from
+/// entering the system through serde-parse boundaries.
+fn deserialize_next_epoch<'de, D>(deserializer: D) -> Result<Option<u64>, D::Error>
+where
+    D: de::Deserializer<'de>,
+{
+    // serde passes a "missing" unit-like value when the field is absent.
+    // We must detect that and return None instead of failing.
+    struct NextEpochVisitor;
+    impl<'de> de::Visitor<'de> for NextEpochVisitor {
+        type Value = Option<u64>;
+
+        fn expecting(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            f.write_str("an integer >= 1, null, or absent field")
+        }
+
+        fn visit_none<E: de::Error>(self) -> Result<Option<u64>, E> {
+            Ok(None)
+        }
+
+        fn visit_some<D: de::Deserializer<'de>>(self, deserializer: D) -> Result<Option<u64>, D::Error> {
+            // When the option is Some(...), deserialize the inner value as u64
+            u64::deserialize(deserializer).and_then(|v| {
+                if v == 0 {
+                    Err(de::Error::custom(
+                        "next_epoch must be >= 1 when present",
+                    ))
+                } else {
+                    Ok(Some(v))
+                }
+            })
+        }
+
+        fn visit_unit<E: de::Error>(self) -> Result<Option<u64>, E> {
+            // This is called when the field is absent (serde passes unit for
+            // optional fields that use deserialize_with).
+            Ok(None)
+        }
+
+        fn visit_u64<E: de::Error>(self, value: u64) -> Result<Option<u64>, E> {
+            if value == 0 {
+                Err(de::Error::custom(
+                    "next_epoch must be >= 1 when present",
+                ))
+            } else {
+                Ok(Some(value))
+            }
+        }
+    }
+    deserializer.deserialize_option(NextEpochVisitor)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -291,5 +350,41 @@ mod tests {
             right.member_id = "c".into();
             right.signing_bytes()
         });
+    }
+
+    #[test]
+    fn next_epoch_rejects_zero() {
+        let json = format!(
+            r#"{{"contract_version":"0.2.0","network_id":"test","plane":"vault","epoch":1,"phase":"stable","previous_manifest_hash":"{}","threshold":2,"members":[],"next_epoch":0,"signatures":[]}}"#,
+            "0".repeat(64)
+        );
+        let result: Result<MembershipManifestV1, _> = serde_json::from_str(&json);
+        assert!(result.is_err(), "next_epoch: Some(0) must be rejected");
+        assert!(
+            result.unwrap_err().to_string().contains("next_epoch must be >= 1"),
+            "error message must mention the schema constraint"
+        );
+    }
+
+    #[test]
+    fn next_epoch_accepts_valid() {
+        let json = format!(
+            r#"{{"contract_version":"0.2.0","network_id":"test","plane":"vault","epoch":1,"phase":"stable","previous_manifest_hash":"{}","threshold":2,"members":[],"next_epoch":5,"signatures":[]}}"#,
+            "0".repeat(64)
+        );
+        let result: Result<MembershipManifestV1, _> = serde_json::from_str(&json);
+        assert!(result.is_ok(), "next_epoch: Some(5) must be accepted");
+        assert_eq!(result.unwrap().next_epoch, Some(5));
+    }
+
+    #[test]
+    fn next_epoch_accepts_none() {
+        let json = format!(
+            r#"{{"contract_version":"0.2.0","network_id":"test","plane":"vault","epoch":1,"phase":"stable","previous_manifest_hash":"{}","threshold":2,"members":[],"signatures":[]}}"#,
+            "0".repeat(64)
+        );
+        let result: Result<MembershipManifestV1, _> = serde_json::from_str(&json);
+        assert!(result.is_ok(), "next_epoch: None must be accepted");
+        assert_eq!(result.unwrap().next_epoch, None);
     }
 }

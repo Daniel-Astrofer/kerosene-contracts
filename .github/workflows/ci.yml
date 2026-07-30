@@ -8,22 +8,32 @@ on:
 permissions:
   contents: read
   pull-requests: read
+  security-events: write
 
 jobs:
-  compatibility:
-    uses: Daniel-Astrofer/.github/.github/workflows/compatibility-ci.yml@2552ff2125c2d72accebe93804b8e139a52ded13
+  compatibility-released:
+    uses: Daniel-Astrofer/.github/.github/workflows/compatibility-ci.yml@a1d66cc5d40c7825c8c79f8fd7bd449fbfd19c5b
     with:
       component: contracts
+      baseline: released
+
+  compatibility-edge:
+    uses: Daniel-Astrofer/.github/.github/workflows/compatibility-ci.yml@a1d66cc5d40c7825c8c79f8fd7bd449fbfd19c5b
+    with:
+      component: contracts
+      baseline: edge
 
   java:
-    uses: Daniel-Astrofer/.github/.github/workflows/java-ci.yml@2552ff2125c2d72accebe93804b8e139a52ded13
+    uses: Daniel-Astrofer/.github/.github/workflows/java-ci.yml@a1d66cc5d40c7825c8c79f8fd7bd449fbfd19c5b
     with:
       gradle-arguments: test
 
   rust:
-    uses: Daniel-Astrofer/.github/.github/workflows/rust-ci.yml@2552ff2125c2d72accebe93804b8e139a52ded13
+    uses: Daniel-Astrofer/.github/.github/workflows/rust-ci.yml@a1d66cc5d40c7825c8c79f8fd7bd449fbfd19c5b
     with:
       enforce-format: true
 
   security:
-    uses: Daniel-Astrofer/.github/.github/workflows/security-scan.yml@2552ff2125c2d72accebe93804b8e139a52ded13
+    uses: Daniel-Astrofer/.github/.github/workflows/security-scan.yml@a1d66cc5d40c7825c8c79f8fd7bd449fbfd19c5b
+    with:
+      codeql-language: java-kotlin
