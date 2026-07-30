@@ -1,0 +1,14 @@
+{
+  "description": "NodeAdminStatusV1 test vector for cross-language compatibility",
+  "contract_version": "0.1.0",
+  "request_id": "req-vec-001",
+  "network_id": "kerosene-test",
+  "plane": "bank",
+  "local_ready": true,
+  "member_ready": true,
+  "quorum_ready": false,
+  "financial_ready": true,
+  "live_members": 3,
+  "threshold": 2,
+  "expected_hash": "cb7a7d6b8b4f1c3e9a2d5f8e7c6b5a4d3f2e1c0b9a8d7e6f5c4b3a2d1e0f9c8"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.kerosene.invalid/admin/core/ledger-account-v1.schema.json",
+  "title": "LedgerAccountV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "account_id", "account_type", "balance", "currency", "tags", "created_at", "updated_at"],
+  "properties": {
+    "contract_version": {"const": "0.1.0"},
+    "account_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "account_type": {"type": "string", "minLength": 1, "maxLength": 64},
+    "balance": {"type": "string", "pattern": "^-?[0-9]+$"},
+    "currency": {"type": "string", "minLength": 1, "maxLength": 16},
+    "tags": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 64}
+    },
+    "created_at": {"type": "string", "format": "date-time"},
+    "updated_at": {"type": "string", "format": "date-time"}
+  }
+}

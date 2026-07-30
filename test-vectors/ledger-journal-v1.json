@@ -1,0 +1,13 @@
+{
+  "description": "LedgerJournalV1 test vector for cross-language compatibility",
+  "contract_version": "0.1.0",
+  "entry_id": "entry-vec-001",
+  "account_id": "acc-vec-001",
+  "direction": "debit",
+  "amount": "50000",
+  "currency": "BTC",
+  "description": "Initial deposit test vector",
+  "reference": "ref-vec-001",
+  "recorded_at": "2026-07-30T12:00:00Z",
+  "expected_hash": "a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8"
+}
