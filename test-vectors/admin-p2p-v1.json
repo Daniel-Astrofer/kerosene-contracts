@@ -1,0 +1,13 @@
+{
+  "vector_label": "AdminP2PV1",
+  "contract_version": "0.1.0",
+  "request_id": "req-p2p-001",
+  "channel_id": "chan-vec-001",
+  "remote_node_id": "node-vec-9876",
+  "capacity_sats": 10000000,
+  "local_balance_sats": 6000000,
+  "remote_balance_sats": 4000000,
+  "is_active": true,
+  "expected_json_hash": "3da0c7c3a5c4e98fcd96e9faf8b6bd3a3a630c74d765073a6457a287b1e3b070",
+  "expected_binary_hash": "2ab4e60316c0eaf51ae09edbc63ecc769f702d37f881841e2dbba900d7b00319"
+}

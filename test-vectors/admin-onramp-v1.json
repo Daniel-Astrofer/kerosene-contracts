@@ -1,0 +1,15 @@
+{
+  "vector_label": "AdminOnrampV1",
+  "contract_version": "0.1.0",
+  "request_id": "req-onramp-001",
+  "order_id": "order-vec-001",
+  "user_id": "user-vec-001",
+  "fiat_currency": "USD",
+  "fiat_amount": "100.00",
+  "sats": 1000000,
+  "provider": "stripe",
+  "status": "completed",
+  "created_at": "2026-07-30T12:00:00Z",
+  "expected_json_hash": "cfc2258a2adfa09c1e938311876922dc970c3abf3dd930da6156d7d749ab5a73",
+  "expected_binary_hash": "abc093cb4a7e8032526a5d5b52e16c40b4be79efaa922bcc3d59e314251a66ee"
+}

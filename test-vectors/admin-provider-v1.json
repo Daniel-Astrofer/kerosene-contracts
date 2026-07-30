@@ -1,0 +1,12 @@
+{
+  "vector_label": "AdminProviderV1",
+  "contract_version": "0.1.0",
+  "request_id": "req-prov-001",
+  "provider_id": "lnd-mainnet",
+  "provider_type": "lightning",
+  "is_online": true,
+  "last_heartbeat": "2026-07-30T12:00:00Z",
+  "version": "0.18.3",
+  "expected_json_hash": "1c1134f72110c1cc9ffd8355b5d7d4c76e0607ac9ca2ffc38882eb1db4727f6a",
+  "expected_binary_hash": "b9183a5878b046e625796326998cb8e0604c663408c573f01658460fc080a9f8"
+}
