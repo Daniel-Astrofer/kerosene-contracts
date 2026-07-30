@@ -6,9 +6,10 @@
 //! Cross-language signing uses canonical JSON
 //! ([`canonical_json_bytes`]) which produces the same bytes in Rust and Java.
 
-use serde::{Deserialize, Serialize};
+use serde::{de, Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
+use std::fmt;
 
 pub const DISCOVERY_CONTRACT_VERSION: &str = "0.2.0";
 pub const PEER_HELLO_DOMAIN: &[u8] = b"KEROSENE_PEER_HELLO_V1";
@@ -327,6 +328,9 @@ pub struct MembershipManifestV1 {
     pub threshold: u16,
     pub members: Vec<ManifestMember>,
     /// Required only during joint consensus and names the intended stable epoch.
+    /// A value of `Some(0)` is invalid (schema minimum is 1) and will fail
+    /// deserialization with a clear error message.
+    #[serde(default, deserialize_with = "deserialize_next_epoch")]
     pub next_epoch: Option<u64>,
     pub signatures: Vec<ManifestSignature>,
 }
@@ -654,6 +658,59 @@ fn integer(out: &mut Vec<u8>, value: u64) {
 fn field(out: &mut Vec<u8>, value: &[u8]) {
     integer(out, value.len() as u64);
     out.extend_from_slice(value);
+}
+
+/// Custom deserializer for `Option<u64>` that rejects `Some(0)`.
+///
+/// The JSON schema requires `next_epoch >= 1` when present. This enforces
+/// that constraint at deserialization time to prevent invalid state from
+/// entering the system through serde-parse boundaries.
+fn deserialize_next_epoch<'de, D>(deserializer: D) -> Result<Option<u64>, D::Error>
+where
+    D: de::Deserializer<'de>,
+{
+    struct NextEpochVisitor;
+    impl<'de> de::Visitor<'de> for NextEpochVisitor {
+        type Value = Option<u64>;
+
+        fn expecting(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            f.write_str("an integer >= 1, null, or absent field")
+        }
+
+        fn visit_none<E: de::Error>(self) -> Result<Option<u64>, E> {
+            Ok(None)
+        }
+
+        fn visit_some<D: de::Deserializer<'de>>(
+            self,
+            deserializer: D,
+        ) -> Result<Option<u64>, D::Error> {
+            u64::deserialize(deserializer).and_then(|v| {
+                if v == 0 {
+                    Err(de::Error::custom(
+                        "next_epoch must be >= 1 when present",
+                    ))
+                } else {
+                    Ok(Some(v))
+                }
+            })
+        }
+
+        fn visit_unit<E: de::Error>(self) -> Result<Option<u64>, E> {
+            Ok(None)
+        }
+
+        fn visit_u64<E: de::Error>(self, value: u64) -> Result<Option<u64>, E> {
+            if value == 0 {
+                Err(de::Error::custom(
+                    "next_epoch must be >= 1 when present",
+                ))
+            } else {
+                Ok(Some(value))
+            }
+        }
+    }
+    deserializer.deserialize_option(NextEpochVisitor)
 }
 
 // ---------------------------------------------------------------------------
