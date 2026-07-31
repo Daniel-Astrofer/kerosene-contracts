@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.kerosene.invalid/admin/core/ledger-journal-v1.schema.json",
+  "title": "LedgerJournalV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "entry_id", "account_id", "direction", "amount", "currency", "description", "reference", "recorded_at"],
+  "properties": {
+    "contract_version": {"const": "0.1.0"},
+    "entry_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "account_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "direction": {"enum": ["debit", "credit"]},
+    "amount": {"type": "string", "pattern": "^-?[0-9]+$"},
+    "currency": {"type": "string", "minLength": 1, "maxLength": 16},
+    "description": {"type": "string", "minLength": 1, "maxLength": 1024},
+    "reference": {"type": "string", "minLength": 1, "maxLength": 256},
+    "recorded_at": {"type": "string", "format": "date-time"}
+  }
+}

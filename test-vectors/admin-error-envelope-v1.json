@@ -1,0 +1,10 @@
+{
+  "vector_label": "AdminErrorEnvelopeV1",
+  "contract_version": "0.1.0",
+  "code": "ERR_TEST",
+  "message": "A sample test error for cross-language validation",
+  "request_id": "req-vec-003",
+  "details": {},
+  "expected_json_hash": "4e30b86df3c4da976e5753db30c820ec0b67569020f877bc8784450294c96f1e",
+  "expected_binary_hash": "d1b8429f8004e44312cb6a545eeb434d9b8c07fc1d45494778025ad53007063b"
+}

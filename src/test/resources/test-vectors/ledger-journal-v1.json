@@ -1,0 +1,13 @@
+{
+  "vector_label": "LedgerJournalV1 sats-based",
+  "contract_version": "0.1.0",
+  "entry_id": "entry-vec-001",
+  "account_id": "acc-vec-001",
+  "direction": "debit",
+  "amount_sats": 50000,
+  "description": "Initial deposit test vector",
+  "reference": "ref-vec-001",
+  "recorded_at": "2026-07-30T12:00:00Z",
+  "expected_json_hash": "25ebcc922dd23f3dbdecad6319f3e53fc475a7daafe0ce05ff92064d93dd3ba8",
+  "expected_binary_hash": "157d3f819e3e252d0a58b048062147f47c48db6628ecf3e3f9fc3c0eb62a9070"
+}

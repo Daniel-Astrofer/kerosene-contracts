@@ -1,0 +1,14 @@
+{
+  "vector_label": "AdminReconciliationV1",
+  "contract_version": "0.1.0",
+  "request_id": "req-rec-001",
+  "reconciliation_id": "rec-vec-001",
+  "ledger_sats": 1000000000,
+  "onchain_sats": 999800000,
+  "lightning_sats": 200000,
+  "delta_sats": -200000,
+  "status": "settled",
+  "reconciled_at": "2026-07-30T12:00:00Z",
+  "expected_json_hash": "ddf3a983685f3883185f43ee7303289be92baa15e63d4c409f4a8d68b9f94052",
+  "expected_binary_hash": "42d905a1190d93591f77c95e6c73f7c1af9ae25257b6bc079b4b8ce59f1d622a"
+}

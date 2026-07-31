@@ -1,0 +1,8 @@
+{
+  "vector_label": "AuditReferenceV1",
+  "event_id": "evt-vec-001",
+  "request_id": "req-vec-004",
+  "occurred_at": "2026-07-30T12:00:00Z",
+  "expected_json_hash": "45a544c874fc567eff6546a18e005dd36e597278f53c140db07eee53b1856e0b",
+  "expected_binary_hash": "b26e1137b5119928a8456451c42b4ebbbb89c7e98d7ce86f14950b0a48cc1a30"
+}

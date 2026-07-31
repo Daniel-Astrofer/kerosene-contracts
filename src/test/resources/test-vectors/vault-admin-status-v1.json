@@ -1,0 +1,12 @@
+{
+  "vector_label": "VaultAdminStatusV1",
+  "contract_version": "0.1.0",
+  "request_id": "req-vec-002",
+  "local_ready": true,
+  "financial_ready": false,
+  "node_id": "vault-node-1",
+  "ceremony_mode": "production",
+  "bitcoin_network": "mainnet",
+  "expected_json_hash": "0474fa0470139b386d64c41ed3a917d6813f98ee27842e6ab22584b4dbc5c1af",
+  "expected_binary_hash": "a07b8e330e423f17f040719f41be15553ac07c5d39f855cfb2f75c61fcaec3c3"
+}

@@ -1,0 +1,15 @@
+{
+  "vector_label": "NodeAdminStatusV1",
+  "contract_version": "0.1.0",
+  "request_id": "req-vec-001",
+  "network_id": "kerosene-test",
+  "plane": "bank",
+  "local_ready": true,
+  "member_ready": true,
+  "quorum_ready": false,
+  "financial_ready": true,
+  "live_members": 3,
+  "threshold": 2,
+  "expected_json_hash": "d88d8e409524741188070d353723e84441cd028716dd9cf5d1d895cd1771c75e",
+  "expected_binary_hash": "d15067f7d7cc9cf6a9bee28a01a4f3585ebd551f5226ce5aff411b0b82429308"
+}
