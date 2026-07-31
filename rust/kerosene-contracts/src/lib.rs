@@ -361,9 +361,7 @@ fn sort_value(value: &serde_json::Value) -> serde_json::Value {
             for (k, v) in map {
                 sorted.insert(k.clone(), sort_value(v));
             }
-            serde_json::Value::Object(
-                sorted.into_iter().collect(),
-            )
+            serde_json::Value::Object(sorted.into_iter().collect())
         }
         serde_json::Value::Array(arr) => {
             serde_json::Value::Array(arr.iter().map(sort_value).collect())
@@ -472,7 +470,14 @@ impl CanonicalSignable for NodeAdminStatusV1 {
         field(&mut out, if self.local_ready { b"true" } else { b"false" });
         field(&mut out, if self.member_ready { b"true" } else { b"false" });
         field(&mut out, if self.quorum_ready { b"true" } else { b"false" });
-        field(&mut out, if self.financial_ready { b"true" } else { b"false" });
+        field(
+            &mut out,
+            if self.financial_ready {
+                b"true"
+            } else {
+                b"false"
+            },
+        );
         integer(&mut out, self.live_members);
         integer(&mut out, u64::from(self.threshold));
         out
@@ -485,7 +490,14 @@ impl CanonicalSignable for VaultAdminStatusV1 {
         field(&mut out, self.contract_version.as_bytes());
         field(&mut out, self.request_id.as_bytes());
         field(&mut out, if self.local_ready { b"true" } else { b"false" });
-        field(&mut out, if self.financial_ready { b"true" } else { b"false" });
+        field(
+            &mut out,
+            if self.financial_ready {
+                b"true"
+            } else {
+                b"false"
+            },
+        );
         field(&mut out, self.node_id.as_bytes());
         field(&mut out, self.ceremony_mode.as_bytes());
         field(&mut out, self.bitcoin_network.as_bytes());
@@ -687,9 +699,7 @@ where
         ) -> Result<Option<u64>, D::Error> {
             u64::deserialize(deserializer).and_then(|v| {
                 if v == 0 {
-                    Err(de::Error::custom(
-                        "next_epoch must be >= 1 when present",
-                    ))
+                    Err(de::Error::custom("next_epoch must be >= 1 when present"))
                 } else {
                     Ok(Some(v))
                 }
@@ -702,9 +712,7 @@ where
 
         fn visit_u64<E: de::Error>(self, value: u64) -> Result<Option<u64>, E> {
             if value == 0 {
-                Err(de::Error::custom(
-                    "next_epoch must be >= 1 when present",
-                ))
+                Err(de::Error::custom("next_epoch must be >= 1 when present"))
             } else {
                 Ok(Some(value))
             }
@@ -963,8 +971,14 @@ mod tests {
 
     #[test]
     fn journal_direction_serialization() {
-        assert_eq!(serde_json::to_string(&JournalDirection::Debit).unwrap(), "\"debit\"");
-        assert_eq!(serde_json::to_string(&JournalDirection::Credit).unwrap(), "\"credit\"");
+        assert_eq!(
+            serde_json::to_string(&JournalDirection::Debit).unwrap(),
+            "\"debit\""
+        );
+        assert_eq!(
+            serde_json::to_string(&JournalDirection::Credit).unwrap(),
+            "\"credit\""
+        );
     }
 
     // ------------------------------------------------------------------
@@ -1008,7 +1022,10 @@ mod tests {
         // Verify that "contract_version" appears before "financial_ready" (c < f)
         let cv_pos = json_str.find("\"contract_version\"").unwrap();
         let fr_pos = json_str.find("\"financial_ready\"").unwrap();
-        assert!(cv_pos < fr_pos, "keys must be sorted: contract_version before financial_ready");
+        assert!(
+            cv_pos < fr_pos,
+            "keys must be sorted: contract_version before financial_ready"
+        );
     }
 
     #[test]
@@ -1314,7 +1331,8 @@ mod tests {
         let canonical = canonical_json_bytes(&obj);
         let actual = hex_hash(&canonical);
         assert_eq!(
-            actual, expected_hash,
+            actual,
+            expected_hash,
             "KAT canonical JSON hash mismatch for {}",
             std::any::type_name::<T>(),
         );
@@ -1331,7 +1349,8 @@ mod tests {
             .unwrap_or_else(|e| panic!("KAT deserialize failed: {e}"));
         let actual = canonical_hash(&obj);
         assert_eq!(
-            actual, expected_hash,
+            actual,
+            expected_hash,
             "KAT binary hash mismatch for {}",
             std::any::type_name::<T>(),
         );
@@ -1387,26 +1406,126 @@ mod tests {
     }
 
     // Canonical JSON KATs (every struct with a test vector)
-    kat_test!(kat_json_node_admin_status, NodeAdminStatusV1, "node-admin-status-v1.json", "expected_json_hash");
-    kat_test!(kat_json_vault_admin_status, VaultAdminStatusV1, "vault-admin-status-v1.json", "expected_json_hash");
-    kat_test!(kat_json_admin_error_envelope, AdminErrorEnvelopeV1, "admin-error-envelope-v1.json", "expected_json_hash");
-    kat_test!(kat_json_audit_reference, AuditReferenceV1, "audit-reference-v1.json", "expected_json_hash");
-    kat_test!(kat_json_ledger_account, LedgerAccountV1, "ledger-account-v1.json", "expected_json_hash");
-    kat_test!(kat_json_ledger_journal, LedgerJournalV1, "ledger-journal-v1.json", "expected_json_hash");
-    kat_test!(kat_json_admin_p2p, AdminP2PV1, "admin-p2p-v1.json", "expected_json_hash");
-    kat_test!(kat_json_admin_onramp, AdminOnrampV1, "admin-onramp-v1.json", "expected_json_hash");
-    kat_test!(kat_json_admin_reconciliation, AdminReconciliationV1, "admin-reconciliation-v1.json", "expected_json_hash");
-    kat_test!(kat_json_admin_provider, AdminProviderV1, "admin-provider-v1.json", "expected_json_hash");
+    kat_test!(
+        kat_json_node_admin_status,
+        NodeAdminStatusV1,
+        "node-admin-status-v1.json",
+        "expected_json_hash"
+    );
+    kat_test!(
+        kat_json_vault_admin_status,
+        VaultAdminStatusV1,
+        "vault-admin-status-v1.json",
+        "expected_json_hash"
+    );
+    kat_test!(
+        kat_json_admin_error_envelope,
+        AdminErrorEnvelopeV1,
+        "admin-error-envelope-v1.json",
+        "expected_json_hash"
+    );
+    kat_test!(
+        kat_json_audit_reference,
+        AuditReferenceV1,
+        "audit-reference-v1.json",
+        "expected_json_hash"
+    );
+    kat_test!(
+        kat_json_ledger_account,
+        LedgerAccountV1,
+        "ledger-account-v1.json",
+        "expected_json_hash"
+    );
+    kat_test!(
+        kat_json_ledger_journal,
+        LedgerJournalV1,
+        "ledger-journal-v1.json",
+        "expected_json_hash"
+    );
+    kat_test!(
+        kat_json_admin_p2p,
+        AdminP2PV1,
+        "admin-p2p-v1.json",
+        "expected_json_hash"
+    );
+    kat_test!(
+        kat_json_admin_onramp,
+        AdminOnrampV1,
+        "admin-onramp-v1.json",
+        "expected_json_hash"
+    );
+    kat_test!(
+        kat_json_admin_reconciliation,
+        AdminReconciliationV1,
+        "admin-reconciliation-v1.json",
+        "expected_json_hash"
+    );
+    kat_test!(
+        kat_json_admin_provider,
+        AdminProviderV1,
+        "admin-provider-v1.json",
+        "expected_json_hash"
+    );
 
     // Binary signing-bytes KATs
-    kat_binary_test!(kat_binary_node_admin_status, NodeAdminStatusV1, "node-admin-status-v1.json", "expected_binary_hash");
-    kat_binary_test!(kat_binary_vault_admin_status, VaultAdminStatusV1, "vault-admin-status-v1.json", "expected_binary_hash");
-    kat_binary_test!(kat_binary_admin_error_envelope, AdminErrorEnvelopeV1, "admin-error-envelope-v1.json", "expected_binary_hash");
-    kat_binary_test!(kat_binary_audit_reference, AuditReferenceV1, "audit-reference-v1.json", "expected_binary_hash");
-    kat_binary_test!(kat_binary_ledger_account, LedgerAccountV1, "ledger-account-v1.json", "expected_binary_hash");
-    kat_binary_test!(kat_binary_ledger_journal, LedgerJournalV1, "ledger-journal-v1.json", "expected_binary_hash");
-    kat_binary_test!(kat_binary_admin_p2p, AdminP2PV1, "admin-p2p-v1.json", "expected_binary_hash");
-    kat_binary_test!(kat_binary_admin_onramp, AdminOnrampV1, "admin-onramp-v1.json", "expected_binary_hash");
-    kat_binary_test!(kat_binary_admin_reconciliation, AdminReconciliationV1, "admin-reconciliation-v1.json", "expected_binary_hash");
-    kat_binary_test!(kat_binary_admin_provider, AdminProviderV1, "admin-provider-v1.json", "expected_binary_hash");
+    kat_binary_test!(
+        kat_binary_node_admin_status,
+        NodeAdminStatusV1,
+        "node-admin-status-v1.json",
+        "expected_binary_hash"
+    );
+    kat_binary_test!(
+        kat_binary_vault_admin_status,
+        VaultAdminStatusV1,
+        "vault-admin-status-v1.json",
+        "expected_binary_hash"
+    );
+    kat_binary_test!(
+        kat_binary_admin_error_envelope,
+        AdminErrorEnvelopeV1,
+        "admin-error-envelope-v1.json",
+        "expected_binary_hash"
+    );
+    kat_binary_test!(
+        kat_binary_audit_reference,
+        AuditReferenceV1,
+        "audit-reference-v1.json",
+        "expected_binary_hash"
+    );
+    kat_binary_test!(
+        kat_binary_ledger_account,
+        LedgerAccountV1,
+        "ledger-account-v1.json",
+        "expected_binary_hash"
+    );
+    kat_binary_test!(
+        kat_binary_ledger_journal,
+        LedgerJournalV1,
+        "ledger-journal-v1.json",
+        "expected_binary_hash"
+    );
+    kat_binary_test!(
+        kat_binary_admin_p2p,
+        AdminP2PV1,
+        "admin-p2p-v1.json",
+        "expected_binary_hash"
+    );
+    kat_binary_test!(
+        kat_binary_admin_onramp,
+        AdminOnrampV1,
+        "admin-onramp-v1.json",
+        "expected_binary_hash"
+    );
+    kat_binary_test!(
+        kat_binary_admin_reconciliation,
+        AdminReconciliationV1,
+        "admin-reconciliation-v1.json",
+        "expected_binary_hash"
+    );
+    kat_binary_test!(
+        kat_binary_admin_provider,
+        AdminProviderV1,
+        "admin-provider-v1.json",
+        "expected_binary_hash"
+    );
 }
