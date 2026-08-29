@@ -2,9 +2,12 @@
 
 Canonical, versioned protocol contracts for Java, Rust and Dart consumers.
 
-The initial extraction contains the existing Java DTO contracts and legacy LND
-protobuf definitions. New bank, Vault, identity and rail protocols must be
-defined here with compatibility tests and test vectors.
+New bank, Vault, identity and rail protocols must be defined here with
+compatibility tests and test vectors. Historical LND protobuf definitions are
+retained only where an active compatibility requirement is documented.
+
+Documentation: [English](docs/en/README.md) ·
+[Português (Brasil)](docs/pt-BR/README.md)
 
 Discovery and membership v1 are defined by the JSON schemas under
 `schemas/discovery/` and the canonical Rust types in
