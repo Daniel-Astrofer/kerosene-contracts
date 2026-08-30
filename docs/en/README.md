@@ -15,6 +15,7 @@ endpoint documentation remains in the service repository.
 - [Admin API contract](../ADMIN_API_CONTRACT.md)
 - [Adapter API contract](../ADAPTER_API_CONTRACT.md)
 - [Discovery and membership v1](../DISCOVERY_MEMBERSHIP_V1.md)
+- [Secure service contracts v1](SECURE_SERVICE_CONTRACTS_V1.md)
 - [Identifier rules](../IDENTIFIER_SPEC.md)
 - [Timestamp rules](../TIMESTAMP_SPEC.md)
 - [Balance contract](../BALANCE_CONTRACT.md)

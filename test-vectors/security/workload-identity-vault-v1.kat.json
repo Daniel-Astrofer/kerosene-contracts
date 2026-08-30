@@ -1,0 +1,14 @@
+{
+  "contract": {
+    "contract_version": "0.3.0",
+    "network_id": "kerosene-test",
+    "workload_id": "50e87195ad3602ce11f744daa77653832153fda0215db38d38a66bc42c9a2072",
+    "spiffe_id": "spiffe://staging.kerosene/service/vault/node/vault-1",
+    "role": "vault",
+    "instance_id": "vault-1",
+    "ed25519_public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+    "valid_from_epoch_ms": 1788134400000,
+    "valid_until_epoch_ms": 1788138000000
+  },
+  "expected_signing_hash": "2a78a3ad624c86d2b87e0140000f8acd38665c8ed9719804603cc89ce276faeb"
+}

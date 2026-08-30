@@ -15,6 +15,11 @@ Discovery and membership v1 are defined by the JSON schemas under
 representation returned by `CanonicalSignable`; arbitrary JSON bytes are never
 signed.
 
+Secure service identity, authority rosters and KFE-to-Vault PSBT intents are
+defined in `schemas/security/`. See the concise
+[English contract](docs/en/SECURE_SERVICE_CONTRACTS_V1.md) and the detailed
+[Portuguese contract](docs/pt-BR/CONTRATOS_DE_SERVICO_SEGUROS_V1.md).
+
 ## Compatibility policy
 
 Breaking changes use a two-phase rollout:

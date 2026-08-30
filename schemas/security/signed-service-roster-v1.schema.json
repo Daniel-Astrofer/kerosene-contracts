@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.kerosene.invalid/security/signed-service-roster-v1.schema.json",
+  "title": "SignedServiceRosterV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "network_id", "authority_plane", "authority_manifest_hash", "roster_hash", "epoch", "previous_roster_hash", "valid_from_epoch_ms", "valid_until_epoch_ms", "members", "signatures"],
+  "properties": {
+    "contract_version": {"const": "0.3.0"},
+    "network_id": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^\\S+$"},
+    "authority_plane": {"enum": ["bank", "vault"]},
+    "authority_manifest_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "roster_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "epoch": {"type": "integer", "minimum": 1, "maximum": 9223372036854775807},
+    "previous_roster_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "valid_from_epoch_ms": {"type": "integer", "minimum": 0, "maximum": 9223372036854775807},
+    "valid_until_epoch_ms": {"type": "integer", "minimum": 1, "maximum": 9223372036854775807},
+    "members": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 65535,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["identity", "endpoint"],
+        "properties": {
+          "identity": {"$ref": "workload-identity-v1.schema.json"},
+          "endpoint": {
+            "type": "string",
+            "minLength": 9,
+            "maxLength": 272,
+            "pattern": "^https://[A-Za-z0-9](?:[A-Za-z0-9.-]{0,251}[A-Za-z0-9])?(?::[1-9][0-9]{0,4})?$"
+          }
+        }
+      }
+    },
+    "signatures": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 65535,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["signer_member_id", "signature"],
+        "properties": {
+          "signer_member_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "signature": {"type": "string", "pattern": "^[0-9a-f]{128}$"}
+        }
+      }
+    }
+  }
+}

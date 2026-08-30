@@ -4,8 +4,8 @@ plugins {
 }
 
 group = "io.kerosene.contracts"
-version = "0.2.0-SNAPSHOT"
-description = "Kerosene shared contracts for KFE/Core boundaries"
+version = "0.3.0-SNAPSHOT"
+description = "Canonical Kerosene cross-repository wire contracts"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
