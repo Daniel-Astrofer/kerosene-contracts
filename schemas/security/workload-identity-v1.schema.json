@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.kerosene.invalid/security/workload-identity-v1.schema.json",
+  "title": "WorkloadIdentityV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "network_id", "workload_id", "spiffe_id", "role", "instance_id", "ed25519_public_key", "valid_from_epoch_ms", "valid_until_epoch_ms"],
+  "properties": {
+    "contract_version": {"const": "0.3.0"},
+    "network_id": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^\\S+$"},
+    "workload_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "spiffe_id": {"type": "string", "pattern": "^spiffe://[a-z0-9.-]+/(?:[A-Za-z0-9._~-]+/)*[A-Za-z0-9._~-]+$", "maxLength": 512},
+    "role": {"enum": ["auth", "kfe", "vault", "node", "admin"]},
+    "instance_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
+    "ed25519_public_key": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "valid_from_epoch_ms": {"type": "integer", "minimum": 0, "maximum": 9223372036854775807},
+    "valid_until_epoch_ms": {"type": "integer", "minimum": 1, "maximum": 9223372036854775807}
+  }
+}

@@ -21,6 +21,7 @@ implementa a API.
 - [Contrato da API administrativa](../ADMIN_API_CONTRACT.md)
 - [Contrato de adapters](../ADAPTER_API_CONTRACT.md)
 - [Discovery e membership v1](../DISCOVERY_MEMBERSHIP_V1.md)
+- [Contratos seguros entre serviços v1](CONTRATOS_DE_SERVICO_SEGUROS_V1.md)
 - [Regras de identificadores](../IDENTIFIER_SPEC.md)
 - [Regras de timestamp](../TIMESTAMP_SPEC.md)
 - [Contrato de saldo](../BALANCE_CONTRACT.md)

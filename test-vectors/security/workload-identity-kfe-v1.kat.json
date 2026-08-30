@@ -1,0 +1,14 @@
+{
+  "contract": {
+    "contract_version": "0.3.0",
+    "network_id": "kerosene-test",
+    "workload_id": "356d39f555198a9088a7dc418a711f23e95c78e853f684b72d133b55b53c25ef",
+    "spiffe_id": "spiffe://staging.kerosene/service/kfe/instance/kfe-1",
+    "role": "kfe",
+    "instance_id": "kfe-1",
+    "ed25519_public_key": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+    "valid_from_epoch_ms": 1788134400000,
+    "valid_until_epoch_ms": 1788138000000
+  },
+  "expected_signing_hash": "b62de6563f5f51ef1afe8dbb0a3c3fa069e3ab7894fdd3a400fc7513c90a070e"
+}

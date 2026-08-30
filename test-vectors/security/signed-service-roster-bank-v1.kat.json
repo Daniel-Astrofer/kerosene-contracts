@@ -1,0 +1,33 @@
+{
+  "contract": {
+    "contract_version": "0.3.0",
+    "network_id": "kerosene-test",
+    "authority_plane": "bank",
+    "authority_manifest_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "roster_hash": "95efdfde61185359eb8cd6a36f2c837d08046255910a2fea2c5e9f2fa21924b7",
+    "epoch": 1,
+    "previous_roster_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "valid_from_epoch_ms": 1788134400000,
+    "valid_until_epoch_ms": 1788138000000,
+    "members": [{
+      "identity": {
+        "contract_version": "0.3.0",
+        "network_id": "kerosene-test",
+        "workload_id": "356d39f555198a9088a7dc418a711f23e95c78e853f684b72d133b55b53c25ef",
+        "spiffe_id": "spiffe://staging.kerosene/service/kfe/instance/kfe-1",
+        "role": "kfe",
+        "instance_id": "kfe-1",
+        "ed25519_public_key": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+        "valid_from_epoch_ms": 1788134400000,
+        "valid_until_epoch_ms": 1788138000000
+      },
+      "endpoint": "https://kfe.kerosene-staging.svc.cluster.local:8443"
+    }],
+    "signatures": [{
+      "signer_member_id": "98191e7416f040cebda3e8cd8bbf69d69f9e46a6553c8778ae39df827586c9df",
+      "signature": "9836ddb9e159ec924a10e260b9ddabc1acf79f02c582f911068d0123a86f3a02ce22344563838b5eb665d3ddc95d70a1ac1816d84c61f2c24cf04fcc1ea15503"
+    }]
+  },
+  "expected_signing_hash": "95efdfde61185359eb8cd6a36f2c837d08046255910a2fea2c5e9f2fa21924b7",
+  "signature_public_key": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a"
+}
